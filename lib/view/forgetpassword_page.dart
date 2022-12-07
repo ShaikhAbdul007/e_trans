@@ -95,11 +95,11 @@ class ForgotPasswordScreen extends StatelessWidget {
                           children: [
                             if (response == 'No DATA FOUND') ...{
                               Text(
-                                  '$response Please Contact With Technical Team for Password..',
+                                  'Employee Id => ${forgotEmpId.text} \n\n$response \n\nPlease Contact With Hr Team for Password..',
                                   style: style)
                             } else ...{
                               Text(
-                                'Please ${response.substring(6, response.length)} for Password !!',
+                                'Employee Id  => ${forgotEmpId.text}\n\nPlease ${response.substring(6, response.length)} \n\nfor Password !!',
                                 style: style,
                               )
                             }
