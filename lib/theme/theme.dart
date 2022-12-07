@@ -9,19 +9,19 @@ class CustomTheme {
         primarySwatch: Colors.orange,
         textTheme: TextTheme(
           bodyText1: GoogleFonts.inter(
-              fontSize: 15.sp,
+              fontSize: 12.sp,
               color: Colors.black45,
               fontWeight: FontWeight.w500),
           bodyText2: GoogleFonts.inter(
               fontSize: 15.sp,
-              color: Colors.black45,
+              color: Colors.black,
               fontWeight: FontWeight.w500),
           headline4: GoogleFonts.inter(
               fontSize: 28.sp,
               color: Colors.white,
               fontWeight: FontWeight.w600),
           headline5: GoogleFonts.poppins(
-              fontSize: 25.sp,
+              fontSize: 22.sp,
               color: Colors.white,
               fontWeight: FontWeight.w500),
           headline6: GoogleFonts.poppins(
@@ -32,8 +32,7 @@ class CustomTheme {
         elevatedButtonTheme: ElevatedButtonThemeData(
             style: ButtonStyle(
                 elevation: MaterialStateProperty.all<double>(10),
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    Colors.black),
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
                 shape: MaterialStateProperty.all<OutlinedBorder>(
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.r))))),
