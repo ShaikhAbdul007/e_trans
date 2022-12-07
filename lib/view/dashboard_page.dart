@@ -56,48 +56,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
           Padding(
             padding: EdgeInsets.only(right: 10.w),
             child: InkWell(
-              onTap: () {
-                Get.defaultDialog(
-                    barrierDismissible: true,
-                    backgroundColor: Colors.grey.shade100,
-                    title: 'Alert',
-                    middleText: 'Are you want to logout ?',
-                    titleStyle: labelStyle,
-                    middleTextStyle: errorStyle,
-                    actions: [
-                      Row(
-                        children: [
-                          Obx(
-                            () => Expanded(
-                                child: CustomButton(
-                                    isLoading: loginViewModel.isLoading.value,
-                                    context: context,
-                                    onTap: () {
-                                      loginViewModel.isLoading.value = true;
-                                      Future.delayed(const Duration(seconds: 2),
-                                          () {
-                                        loginViewModel.isLoading.value = true;
-                                        loginViewModel.removeUser();
-                                        loginViewModel.saveLogIn(false);
-                                        loginViewModel.isLoading.value = false;
-                                        Get.offAll(() => const LoginScreen());
-                                      });
-                                    },
-                                    buttonText: "Yes")),
-                          ),
-                          setWidth(10),
-                          Expanded(
-                              child: CustomButton(
-                                  context: context,
-                                  onTap: () {
-                                    Get.back();
-                                  },
-                                  buttonText: "No"))
-                        ],
-                      ),
-                    ],
-                    radius: 20);
-              },
+              onTap: () => getDialog(),
               child: Icon(
                 Icons.logout,
                 size: 20.sp,
@@ -221,7 +180,28 @@ class _DashBoardPageState extends State<DashBoardPage> {
           image: AssetImage('asset/chatbot 1.png'),
         ),
       ),
-      drawer: const Drawer(),
+      drawer: Drawer(
+        child: Container(
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomRight,
+                  colors: [
+                Color(0xFFCC9900),
+                Color(0xffff9900),
+                Color(0xFFCC9900),
+              ])),
+          child: ListView(children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 300, left: 80),
+              child: Text(
+                'Comming Soon',
+                style: labelStyle,
+              ),
+            )
+          ]),
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         elevation: 10,
         items: const [
@@ -269,4 +249,66 @@ class _DashBoardPageState extends State<DashBoardPage> {
       ),
     );
   }
+
+  getDialog() => Get.defaultDialog(
+      barrierDismissible: true,
+      backgroundColor: Colors.grey.shade100,
+      title: 'Alert',
+      middleText: 'Are you want to logout ?',
+      titleStyle: Theme.of(context).textTheme.headline4?.copyWith(
+          fontSize: 15.sp, color: Colors.black, fontWeight: FontWeight.bold),
+      middleTextStyle: Theme.of(context)
+          .textTheme
+          .headline6
+          ?.copyWith(fontSize: 16.sp, color: Colors.red),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(left: 60),
+          child: Row(
+            children: [
+              Obx(
+                () => TextButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.black)),
+                    onPressed: () {
+                      loginViewModel.isLoading.value = true;
+                      Future.delayed(const Duration(seconds: 2), () {
+                        loginViewModel.removeUser();
+                        loginViewModel.saveLogIn(false);
+                        loginViewModel.isLoading.value = false;
+                        Get.offAll(() => const LoginScreen());
+                      });
+                    },
+                    child: loginViewModel.isLoading.value
+                        ? const CircularProgressIndicator()
+                        : Text(
+                            'Yes',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline4
+                                ?.copyWith(
+                                    fontSize: 16.sp, color: Colors.white),
+                          )),
+              ),
+              setWidth(10),
+              TextButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.black)),
+                  onPressed: () {
+                    Get.back();
+                  },
+                  child: Text(
+                    'No',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline4
+                        ?.copyWith(fontSize: 16.sp, color: Colors.white),
+                  )),
+            ],
+          ),
+        ),
+      ],
+      radius: 20);
 }
