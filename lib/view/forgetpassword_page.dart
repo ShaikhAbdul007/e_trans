@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:trasn_human_resource_managment/view/login_page.dart';
-
 import '../viewModel/login_view_model.dart';
 import '../widget/helper.dart';
 
@@ -39,7 +38,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 width: 290.w,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(8.r),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.15),
@@ -106,7 +105,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                           ],
                         ),
                         titleStyle: alertStyle,
-                        radius: 20);
+                        radius: 20.r);
                   }
                 },
                 context: context,
