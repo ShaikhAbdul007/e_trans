@@ -84,19 +84,21 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: CustomTextField(
-                      obscureText: loginViewModel.passwordSecure.value,
-                      suffixIcon: IconButton(
-                        icon: loginViewModel.passwordSecure.value
-                            ? const Icon(Icons.lock_outline)
-                            : const Icon(Icons.lock_open_outlined),
-                        onPressed: () {
-                          print("tap");
-                          loginViewModel.passwordSecureToggle();
-                        },
+                    child: Obx(
+                      () => CustomTextField(
+                        obscureText: loginViewModel.passwordSecure.value,
+                        suffixIcon: IconButton(
+                          icon: loginViewModel.passwordSecure.value
+                              ? const Icon(Icons.lock_outline)
+                              : const Icon(Icons.lock_open_outlined),
+                          onPressed: () {
+                            print("tap");
+                            loginViewModel.passwordSecureToggle();
+                          },
+                        ),
+                        hintText: "password",
+                        controller: passController,
                       ),
-                      hintText: "password",
-                      controller: passController,
                     ),
                   ),
                 ],
