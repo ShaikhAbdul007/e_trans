@@ -202,51 +202,6 @@ class _DashBoardPageState extends State<DashBoardPage> {
           ]),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 10,
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.dashboard_outlined,
-                color: navBarUnSelectedColor,
-              ),
-              activeIcon: Icon(
-                Icons.dashboard_outlined,
-                color: navBarSelectedColor,
-              ),
-              label: 'DashBoard'),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.calendar_month_outlined,
-                color: navBarUnSelectedColor,
-              ),
-              activeIcon: Icon(
-                Icons.calendar_month_sharp,
-                color: navBarSelectedColor,
-              ),
-              label: 'Leave'),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.calendar_today,
-                color: navBarUnSelectedColor,
-              ),
-              activeIcon: Icon(
-                Icons.calendar_today,
-                color: navBarSelectedColor,
-              ),
-              label: 'TimeSheet'),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.settings,
-                color: navBarUnSelectedColor,
-              ),
-              activeIcon: Icon(
-                Icons.settings,
-                color: navBarSelectedColor,
-              ),
-              label: 'Setting'),
-        ],
-      ),
     );
   }
 
