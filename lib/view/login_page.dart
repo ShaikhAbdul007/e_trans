@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:trasn_human_resource_managment/view/bottom_navigation_view.dart';
 import 'package:trasn_human_resource_managment/view/dashboard_page.dart';
 import 'package:trasn_human_resource_managment/view/forgetpassword_page.dart';
 import '../viewModel/login_view_model.dart';
@@ -16,7 +17,6 @@ class LoginScreen extends StatelessWidget {
     TextEditingController empController = TextEditingController();
     TextEditingController passController = TextEditingController();
     TextStyle? style = Theme.of(context).textTheme.headline6;
-    final userDate = GetStorage();
 
     return Scaffold(
       body: Container(
@@ -34,7 +34,7 @@ class LoginScreen extends StatelessWidget {
           children: [
             Container(
                 margin: EdgeInsets.only(left: 100.w, top: 100.h),
-                child: Text("Welcome",
+                child: Text("Welcome ",
                     style: Theme.of(context).textTheme.headline4)),
             setHeight(5),
             Container(
@@ -92,7 +92,6 @@ class LoginScreen extends StatelessWidget {
                               ? const Icon(Icons.lock_outline)
                               : const Icon(Icons.lock_open_outlined),
                           onPressed: () {
-                            print("tap");
                             loginViewModel.passwordSecureToggle();
                           },
                         ),
@@ -167,7 +166,7 @@ class LoginScreen extends StatelessWidget {
                                 fit: BoxFit.fitWidth),
                           );
                           Future.delayed(const Duration(seconds: 2), () {
-                            Get.offAll(() => const DashBoardPage());
+                            Get.offAll(() => const CustomButtomNavigation());
                           });
                         } else if (response == 'LOGIN FAILED') {
                           Get.snackbar('', '',
@@ -222,10 +221,10 @@ class LoginScreen extends StatelessWidget {
             ),
             Padding(
                 padding: EdgeInsets.only(left: 110.w, right: 120.w),
-                child: const Divider(
+                child: Divider(
                   color: Colors.white,
-                  thickness: 1.5,
-                  height: 1.2,
+                  thickness: 1.5.sp,
+                  height: 1.2.sp,
                 )),
           ],
         ),
