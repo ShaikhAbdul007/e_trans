@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import 'routes/routes.dart';
 import 'theme/theme.dart';
 
@@ -22,8 +21,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'e-Trans',
           theme: CustomTheme.lightTheme(),
-          darkTheme: CustomTheme.darkTheme(),
-          initialRoute: '/splashScreen',
+          initialRoute: '/bottomNavigationScreen',
           getPages: MyRoutes.viewPages,
         );
       },
