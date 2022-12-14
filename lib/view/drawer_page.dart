@@ -23,7 +23,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               Color(0xffff9900),
               Color(0xFFCC9900),
             ])),
-        child: ListView(children: [
+        child: ListView(shrinkWrap: true, children: [
           Padding(
             padding: EdgeInsets.only(top: 30.h, left: 5.w),
             child: Row(
@@ -35,17 +35,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                 ),
                 setWidth(10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Name: Abdul Rehman Shaikh',
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                    setHeight(6),
-                    Text('Email Id: abdul@gmail.com',
-                        style: Theme.of(context).textTheme.bodyText1),
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Name: Abdul Rehman Shaikh',
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
+                      setHeight(6),
+                      Text('Email Id: abdul@gmail.com',
+                          style: Theme.of(context).textTheme.bodyText1),
+                    ],
+                  ),
                 )
               ],
             ),
