@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:trasn_human_resource_managment/color/appcolor.dart';
+import 'package:trasn_human_resource_managment/view/drawer_page.dart';
 import 'package:trasn_human_resource_managment/viewModel/login_view_model.dart';
-
-import '../future_component/security_code_component.dart';
 import '../widget/helper.dart';
 import 'login_page.dart';
+import 'package:intl/intl.dart';
 
 class DashBoardPage extends StatefulWidget {
   const DashBoardPage({Key? key}) : super(key: key);
@@ -24,7 +22,6 @@ class _DashBoardPageState extends State<DashBoardPage> {
   @override
   void initState() {
     var userName = loginViewModel.retrieveUserName();
-    // TODO: implement initState
     security = loginViewModel.getSecurityCode(userName);
     super.initState();
   }
@@ -47,27 +44,154 @@ class _DashBoardPageState extends State<DashBoardPage> {
 
     return Scaffold(
       appBar: AppBar(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(15.r),
+          bottomRight: Radius.circular(15.r),
+        )),
         title: Text(
           'DashBoard',
           style: Theme.of(context).textTheme.headline5,
         ),
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 10.w),
-            child: InkWell(
-              onTap: () => getDialog(),
-              child: Icon(
-                Icons.logout,
-                size: 20.sp,
-              ),
-            ),
-          )
-        ],
       ),
       body: ListView(
         shrinkWrap: true,
-        children: [],
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: 5.h, left: 10.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 5.h, left: 10.w),
+                  child: Text(
+                    'Welcome',
+                    style: style?.copyWith(
+                        color: Colors.black.withOpacity(1), fontSize: 18.sp),
+                  ),
+                ),
+                setHeight(2),
+                Padding(
+                  padding: EdgeInsets.only(top: 5.h, left: 10.w),
+                  child: Text(
+                    'Abdul Shaikh',
+                    style: style?.copyWith(
+                      color: Colors.blueGrey,
+                      fontSize: 20.sp,
+                    ),
+                  ),
+                ),
+                setHeight(10),
+                Padding(
+                  padding: EdgeInsets.only(top: 5.h, left: 10.w),
+                  child: Text(
+                    'Today Status',
+                    style: style?.copyWith(
+                        color: Colors.black,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 10.h, left: 20.w),
+            child: RichText(
+                text: TextSpan(
+                    text: DateTime.now().day.toString(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline4
+                        ?.copyWith(fontSize: 20.sp, color: Colors.red),
+                    children: [
+                  TextSpan(
+                      text: DateFormat(' MMMM yyyy')
+                          .format(DateTime.now())
+                          .toString(),
+                      style: Theme.of(context).textTheme.headline4?.copyWith(
+                          fontSize: 18.sp,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold))
+                ])),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 5.h, left: 20.w),
+            child: StreamBuilder(
+              stream: Stream.periodic(const Duration(seconds: 1)),
+              builder: (context, snapshot) {
+                return Text(
+                  DateFormat('hh:mm:ss a').format(DateTime.now()),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4
+                      ?.copyWith(fontSize: 22.sp, color: Colors.black38),
+                );
+              },
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h),
+            height: 100.h,
+            decoration: BoxDecoration(boxShadow: const [
+              BoxShadow(
+                  color: Colors.black54, blurRadius: 10, offset: Offset(2, 2))
+            ], borderRadius: BorderRadius.circular(30.r), color: Colors.white),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Check In',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6
+                            ?.copyWith(color: Colors.black)),
+                    setHeight(5),
+                    Text(
+                      '9:30 Am',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4
+                          ?.copyWith(fontSize: 22.sp, color: Colors.black),
+                    )
+                  ],
+                )),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.h),
+                  child: const VerticalDivider(
+                    thickness: 1.5,
+                    color: Colors.black,
+                  ),
+                ),
+                Expanded(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Check Out',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6
+                            ?.copyWith(color: Colors.red)),
+                    setHeight(5),
+                    Text('6:30 Pm',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline4
+                            ?.copyWith(fontSize: 22.sp, color: Colors.black))
+                  ],
+                )),
+              ],
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -115,6 +239,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                               ),
                             );
                           } else if (snapshot.hasData) {
+                            var data = snapshot.data;
                             return Padding(
                               padding: const EdgeInsets.only(top: 20),
                               child: Column(
@@ -136,16 +261,21 @@ class _DashBoardPageState extends State<DashBoardPage> {
                                         ]),
                                     child: Row(
                                       children: [
-                                        Text('Security Code',
-                                            style: labelStyle),
-                                        setWidth(10),
-                                        Icon(
-                                          Icons.arrow_right_alt,
-                                          size: 25.sp,
-                                        ),
-                                        setWidth(10),
-                                        Text(snapshot.data.toString(),
-                                            style: securityStyle)
+                                        if (data == 'No Data Found') ...{
+                                          Text(data.toString(),
+                                              style: securityStyle)
+                                        } else ...{
+                                          Text('Security Code',
+                                              style: labelStyle),
+                                          setWidth(10),
+                                          Icon(
+                                            Icons.arrow_right_alt,
+                                            size: 25.sp,
+                                          ),
+                                          setWidth(10),
+                                          Text(data.toString(),
+                                              style: securityStyle)
+                                        }
                                       ],
                                     ),
                                   ),
@@ -180,90 +310,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
           image: AssetImage('asset/chatbot 1.png'),
         ),
       ),
-      drawer: Drawer(
-        child: Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomRight,
-                  colors: [
-                Color(0xFFCC9900),
-                Color(0xffff9900),
-                Color(0xFFCC9900),
-              ])),
-          child: ListView(children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 300, left: 80),
-              child: Text(
-                'Comming Soon',
-                style: labelStyle,
-              ),
-            )
-          ]),
-        ),
-      ),
+      drawer: const CustomDrawer(),
     );
   }
-
-  getDialog() => Get.defaultDialog(
-      barrierDismissible: true,
-      backgroundColor: Colors.grey.shade100,
-      title: 'Alert',
-      middleText: 'Are you want to logout ?',
-      titleStyle: Theme.of(context).textTheme.headline4?.copyWith(
-          fontSize: 15.sp, color: Colors.black, fontWeight: FontWeight.bold),
-      middleTextStyle: Theme.of(context)
-          .textTheme
-          .headline6
-          ?.copyWith(fontSize: 16.sp, color: Colors.red),
-      actions: [
-        Padding(
-          padding: const EdgeInsets.only(left: 60),
-          child: Row(
-            children: [
-              Obx(
-                () => TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.black)),
-                    onPressed: () {
-                      loginViewModel.isLoading.value = true;
-                      Future.delayed(const Duration(seconds: 2), () {
-                        loginViewModel.removeUser();
-                        loginViewModel.saveLogIn(false);
-                        loginViewModel.isLoading.value = false;
-                        Get.offAll(() => const LoginScreen());
-                      });
-                    },
-                    child: loginViewModel.isLoading.value
-                        ? const CircularProgressIndicator()
-                        : Text(
-                            'Yes',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline4
-                                ?.copyWith(
-                                    fontSize: 16.sp, color: Colors.white),
-                          )),
-              ),
-              setWidth(10),
-              TextButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black)),
-                  onPressed: () {
-                    Get.back();
-                  },
-                  child: Text(
-                    'No',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline4
-                        ?.copyWith(fontSize: 16.sp, color: Colors.white),
-                  )),
-            ],
-          ),
-        ),
-      ],
-      radius: 20);
 }
