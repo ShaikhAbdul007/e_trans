@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'e-Trans',
           theme: CustomTheme.lightTheme(),
-          initialRoute: '/bottomNavigationScreen',
+          initialRoute: '/proileScreen',
           getPages: MyRoutes.viewPages,
         );
       },
