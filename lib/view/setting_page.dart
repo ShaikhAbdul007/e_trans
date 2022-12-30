@@ -1,17 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:trasn_human_resource_managment/view/leave_page.dart';
+import 'package:trasn_human_resource_managment/view/planned_holiday_page.dart';
+import 'package:trasn_human_resource_managment/view/voucher_page.dart';
+import '../model/user_profile_model.dart';
 import '../viewModel/login_view_model.dart';
+import '../viewModel/user_profile_view_model.dart';
 import '../widget/helper.dart';
 import 'change_password_page.dart';
 import 'login_page.dart';
 import 'user_profile_page.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  late Future<UserProfileModel> userSettingProfile;
+  UserProfileViewModel userProfileViewModel = Get.put(UserProfileViewModel());
+  @override
+  void initState() {
+    var userName = userProfileViewModel.retrieveUserName();
+    userSettingProfile = userProfileViewModel.getUserProfileData(userName);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var isDark = Theme.of(context).brightness == Brightness.dark;
     LoginViewModel loginViewModel = Get.put(LoginViewModel());
     return Scaffold(
       appBar: AppBar(
@@ -27,19 +47,58 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
       body: ListView(shrinkWrap: true, children: [
-        ProfileItem(
-          onTap: () {
-            Get.to(() => const UserProfilePage());
-          },
-          tittle: 'Name: Abdul Rehman Shaikh',
-          subTittle: 'Email Id: abdul@gmail.com',
-          childWidget: CircleAvatar(
-            radius: 40.r,
-            child: const Image(
-              image: AssetImage('asset/successEmoji.png'),
-            ),
-          ),
-        ),
+        FutureBuilder(
+            future: userSettingProfile,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.none) {
+                return const Center(
+                  child: Text(
+                    "Can not connect to server",
+                  ),
+                );
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.connectionState == ConnectionState.active ||
+                  snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasData) {
+                  var userData = snapshot.data;
+                  return ProfileItem(
+                    onTap: () {
+                      Get.to(() => const UserProfilePage());
+                    },
+                    tittle: 'Name: ${userData?.empname}',
+                    subTittle: 'Email Id: ${userData?.oemail}',
+                    childWidget: CircleAvatar(
+                      radius: 40.r,
+                      child: const Image(
+                        image: AssetImage('asset/successEmoji.png'),
+                      ),
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(snapshot.error.toString()),
+                        const Icon(Icons.error_outline),
+                      ],
+                    ),
+                  );
+                } else {
+                  return const Center(
+                      child: Text(
+                    "Something went wrong",
+                  ));
+                }
+              } else {
+                return const Center(
+                    child: Text(
+                  "Something went wrong",
+                ));
+              }
+            }),
         ProfileItem(
           onTap: () {
             Get.to(() => const ChangePasswordScreen());
@@ -54,9 +113,11 @@ class ProfileScreen extends StatelessWidget {
               )),
         ),
         ProfileItem(
-          onTap: () {},
+          onTap: () {
+            Get.to(() => const LeaveScreen());
+          },
           tittle: 'Leave',
-          subTittle: 'Manage your leave here',
+          subTittle: 'Apply & manage your leave here',
           childWidget: CircleAvatar(
               radius: 35.r,
               child: const Image(
@@ -65,18 +126,23 @@ class ProfileScreen extends StatelessWidget {
               )),
         ),
         ProfileItem(
-          onTap: () {},
+          onTap: () {
+            Get.to(() => const Voucher());
+          },
           tittle: 'Expense',
-          subTittle: 'Manage your expense here',
+          subTittle: 'Apply & manage voucher form here',
           childWidget: CircleAvatar(
               radius: 35.r,
-              child: const Image(
+              child: Image(
                 height: 40,
-                image: AssetImage('asset/ewallet.png'),
+                color: isDark ? Colors.white : null,
+                image: const AssetImage('asset/ewallet.png'),
               )),
         ),
         ProfileItem(
-          onTap: () {},
+          onTap: () {
+            Get.to(() => const PlannedHolidayScreen());
+          },
           tittle: 'Planed Holiday',
           subTittle: 'Manage your planed holiday',
           childWidget: CircleAvatar(

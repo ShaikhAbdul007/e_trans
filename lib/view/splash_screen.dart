@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:trasn_human_resource_managment/cache_manager/cache_manager.dart';
+import 'package:trasn_human_resource_managment/view/bottom_navigation_view.dart';
 import 'package:trasn_human_resource_managment/view/dashboard_page.dart';
 import 'package:trasn_human_resource_managment/view/login_page.dart';
 
@@ -25,7 +26,7 @@ class _SplashPageScreenState extends State<SplashPageScreen> {
     Timer(const Duration(seconds: 3), () async {
       manager.checkUserLogged().then((status) {
         if (status == true) {
-          Get.offAll(() => const DashBoardPage());
+          Get.offAll(() => const CustomButtomNavigation());
         }
         if (status == false) {
           Get.offAll(() => const LoginScreen());
@@ -52,7 +53,7 @@ class _SplashPageScreenState extends State<SplashPageScreen> {
               ])),
           child: Column(
             children: [
-             const Image(
+              const Image(
                   fit: BoxFit.cover,
                   image: AssetImage('asset/splashscreenn.png')),
               Expanded(child: MyAnimation.animation('E-Trans', context))

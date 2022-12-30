@@ -1,11 +1,13 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:trasn_human_resource_managment/view/drawer_page.dart';
-import 'package:trasn_human_resource_managment/viewModel/login_view_model.dart';
+import 'package:image_picker/image_picker.dart';
+import '../viewModel/login_view_model.dart';
 import '../widget/helper.dart';
-import 'login_page.dart';
 import 'package:intl/intl.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
+import '../widget/notification.dart';
 
 class DashBoardPage extends StatefulWidget {
   const DashBoardPage({Key? key}) : super(key: key);
@@ -18,7 +20,9 @@ class _DashBoardPageState extends State<DashBoardPage> {
   late final Future<String> security;
 
   LoginViewModel loginViewModel = Get.put(LoginViewModel());
-
+  XFile? imageFile;
+  bool textScanning = false;
+  String scannedText = '';
   @override
   void initState() {
     var userName = loginViewModel.retrieveUserName();
@@ -28,6 +32,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
 
   @override
   Widget build(BuildContext context) {
+    var isdark = Theme.of(context).brightness == Brightness.dark;
     final style =
         Theme.of(context).textTheme.headline4?.copyWith(fontSize: 20.sp);
     final securityStyle = Theme.of(context).textTheme.headline4?.copyWith(
@@ -69,7 +74,9 @@ class _DashBoardPageState extends State<DashBoardPage> {
                   child: Text(
                     'Welcome',
                     style: style?.copyWith(
-                        color: Colors.black.withOpacity(1), fontSize: 18.sp),
+                        color:
+                            isdark ? Colors.white : Colors.black.withOpacity(1),
+                        fontSize: 18.sp),
                   ),
                 ),
                 setHeight(2),
@@ -78,7 +85,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                   child: Text(
                     'Abdul Shaikh',
                     style: style?.copyWith(
-                      color: Colors.blueGrey,
+                      color: isdark ? Colors.white : Colors.blueGrey,
                       fontSize: 20.sp,
                     ),
                   ),
@@ -89,7 +96,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                   child: Text(
                     'Today Status',
                     style: style?.copyWith(
-                        color: Colors.black,
+                        color: isdark ? Colors.white : Colors.black,
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w500),
                   ),
@@ -113,7 +120,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                           .toString(),
                       style: Theme.of(context).textTheme.headline4?.copyWith(
                           fontSize: 18.sp,
-                          color: Colors.black,
+                          color: isdark ? Colors.white : Colors.black,
                           fontWeight: FontWeight.bold))
                 ])),
           ),
@@ -124,10 +131,9 @@ class _DashBoardPageState extends State<DashBoardPage> {
               builder: (context, snapshot) {
                 return Text(
                   DateFormat('hh:mm:ss a').format(DateTime.now()),
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4
-                      ?.copyWith(fontSize: 22.sp, color: Colors.black38),
+                  style: Theme.of(context).textTheme.headline4?.copyWith(
+                      fontSize: 22.sp,
+                      color: isdark ? Colors.white : Colors.black38),
                 );
               },
             ),
@@ -191,6 +197,65 @@ class _DashBoardPageState extends State<DashBoardPage> {
               ],
             ),
           ),
+          setHeight(10),
+          // // Container(
+          // //   height: 300,
+          // //   width: 500,
+          // //   child: imageFile == null
+          // //       ? const Center(child: Text("No Image Selected"))
+          // //       : Image.file(File(imageFile!.path)),
+          // // ),
+          // // setHeight(10),
+
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   crossAxisAlignment: CrossAxisAlignment.center,
+          //   children: [
+          //     InkWell(
+          //       onTap: () {
+          //         getImage(ImageSource.gallery);
+          //       },
+          //       child: const Text(
+          //         "Scan From Gallery",
+          //         style: TextStyle(fontSize: 20, color: Colors.blueAccent),
+          //       ),
+          //     ),
+          //     setWidth(10),
+          //     InkWell(
+          //       onTap: () {
+          //         getImage(ImageSource.camera);
+          //       },
+          //       child: const Text(
+          //         "Scan From camera",
+          //         style: TextStyle(fontSize: 20, color: Colors.red),
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // setWidth(10),
+
+          // Container(
+          //     margin: const EdgeInsets.only(left: 50),
+          //     height: 200,
+          //     child: textScanning == false
+          //         ? SingleChildScrollView(
+          //             child: Text(
+          //               scannedText,
+          //             ),
+          //           )
+          //         : const Text('No text Detected'))
+          // Container(
+          //   margin: const EdgeInsets.only(left: 50.0, top: 15, right: 50),
+          //   child: CustomButton(
+          //       context: context,
+          //       onTap: () {
+          //         CustomNotification.showCustomNotification(
+          //             body: "Your Leave Request has been Accepted",
+          //             payLoad: 'payload',
+          //             title: "Jafar");
+          //       },
+          //       buttonText: 'Notification'),
+          // )
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -271,6 +336,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                                           Icon(
                                             Icons.arrow_right_alt,
                                             size: 25.sp,
+                                            color: Colors.black,
                                           ),
                                           setWidth(10),
                                           Text(data.toString(),
@@ -310,7 +376,39 @@ class _DashBoardPageState extends State<DashBoardPage> {
           image: AssetImage('asset/chatbot 1.png'),
         ),
       ),
-      drawer: const CustomDrawer(),
     );
+  }
+
+  void getImage(ImageSource source) async {
+    try {
+      final pickedImage = await ImagePicker().pickImage(source: source);
+      if (pickedImage == null) {
+        return;
+      } else {
+        textScanning = true;
+        imageFile = pickedImage;
+        setState(() {});
+        getRecognisedText(pickedImage);
+      }
+    } catch (e) {
+      textScanning = false;
+      print(e.toString());
+    }
+  }
+
+  void getRecognisedText(XFile image) async {
+    textScanning = true;
+    final inputImage = InputImage.fromFilePath(image.path);
+    final textDetector = GoogleMlKit.vision.textRecognizer();
+    RecognizedText recognizedText = await textDetector.processImage(inputImage);
+    await textDetector.close();
+    scannedText = "";
+    for (TextBlock block in recognizedText.blocks) {
+      for (TextLine line in block.lines) {
+        scannedText = "$scannedText${line.text}\n";
+      }
+    }
+    textScanning = false;
+    setState(() {});
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 Widget setHeight(double size) {
   return SizedBox(
@@ -24,6 +25,7 @@ class CustomBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isdark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -38,9 +40,9 @@ class CustomBottomSheet extends StatelessWidget {
               const Spacer(),
               InkWell(
                 onTap: onTap,
-                child: const Icon(
+                child: Icon(
                   Icons.cancel,
-                  color: Colors.black,
+                  color: isdark ? Colors.white : Colors.black,
                 ),
               )
             ],
@@ -61,23 +63,28 @@ class CustomBottomSheet extends StatelessWidget {
 }
 
 class CustomTextField extends StatelessWidget {
-  final String? hintText;
+  final String hintText;
   final TextEditingController controller;
   final Widget? suffixIcon;
   final bool obscureText;
+  final int maxLines;
   const CustomTextField(
       {Key? key,
-      this.hintText,
+      required this.hintText,
       required this.controller,
       this.suffixIcon,
-      this.obscureText = false})
+      this.obscureText = false,
+      this.maxLines = 1})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var isdark = Theme.of(context).brightness == Brightness.dark;
     return TextField(
+        style: GoogleFonts.poppins(color: Colors.black),
         obscureText: obscureText,
         controller: controller,
+        maxLines: maxLines,
         decoration: InputDecoration(
           suffixIcon: suffixIcon,
           contentPadding: EdgeInsets.only(top: 10.h, left: 10.w),
@@ -108,6 +115,7 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isdark = Theme.of(context).brightness == Brightness.dark;
     return SizedBox(
       height: 40.h,
       width: 250.w,
@@ -121,11 +129,14 @@ class CustomButton extends StatelessWidget {
                     children: [
                       Text(
                         buttonText,
-                        style: Theme.of(context).textTheme.headline6,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6
+                            ?.copyWith(color: isdark ? Colors.black : null),
                       ),
                       Icon(
                         iconData,
-                        color: Colors.white,
+                        color: isdark ? Colors.black : Colors.white,
                       )
                     ],
                   )
@@ -133,8 +144,59 @@ class CustomButton extends StatelessWidget {
                 ? const CircularProgressIndicator()
                 : Text(
                     buttonText,
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline6
+                        ?.copyWith(color: isdark ? Colors.black : null),
                   ),
+      ),
+    );
+  }
+}
+
+class CustomDatePicker extends StatelessWidget {
+  final String hintText;
+  final DateTime selectedDate;
+  final TextEditingController controller;
+  const CustomDatePicker(
+      {super.key,
+      required this.hintText,
+      required this.selectedDate,
+      required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    var isdark = Theme.of(context).brightness == Brightness.dark;
+    return TextField(
+      style: GoogleFonts.poppins(color: Colors.black),
+      controller: controller,
+      readOnly: true,
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.only(top: 10.h, left: 10.w),
+        border: InputBorder.none,
+        suffixIcon: InkWell(
+            onTap: () async {
+              DateTime? pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: selectedDate,
+                  firstDate: DateTime(1990),
+                  lastDate: DateTime(2030));
+              if (pickedDate != null) {
+                String formatDate = DateFormat('yyyy-mm-dd').format(pickedDate);
+                controller.text = formatDate;
+              } else {
+                return;
+              }
+            },
+            child: Icon(
+              Icons.calendar_month_rounded,
+              color: isdark ? Colors.black : null,
+            )),
+        hintText: hintText,
+        hintStyle: GoogleFonts.poppins(
+          color: Colors.black,
+          fontSize: 14.sp,
+        ),
       ),
     );
   }

@@ -17,7 +17,7 @@ class CustomTheme {
               color: Colors.black,
               fontWeight: FontWeight.w500),
           headline4: GoogleFonts.inter(
-              fontSize: 28.sp,
+              fontSize: 25.sp,
               color: Colors.white,
               fontWeight: FontWeight.w600),
           headline5: GoogleFonts.poppins(
@@ -47,13 +47,33 @@ class CustomTheme {
 
   static ThemeData darkTheme() {
     return ThemeData(
-        brightness: Brightness.dark,
-        bottomSheetTheme: const BottomSheetThemeData(
-            backgroundColor: Colors.white30,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15),
-              topRight: Radius.circular(15),
-            ))));
+      brightness: Brightness.dark,
+      bottomSheetTheme: const BottomSheetThemeData(
+          backgroundColor: Colors.white10,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ))),
+      textTheme: TextTheme(
+        bodyText1: GoogleFonts.inter(
+            fontSize: 12.sp, color: Colors.black, fontWeight: FontWeight.w500),
+        bodyText2: GoogleFonts.inter(
+            fontSize: 15.sp, color: Colors.black, fontWeight: FontWeight.w500),
+        headline4: GoogleFonts.inter(
+            fontSize: 25.sp, color: Colors.black, fontWeight: FontWeight.w600),
+        headline5: GoogleFonts.poppins(
+            fontSize: 22.sp, color: Colors.white, fontWeight: FontWeight.w500),
+        headline6: GoogleFonts.poppins(
+            fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.w400),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+              elevation: MaterialStateProperty.all<double>(10),
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              shape: MaterialStateProperty.all<OutlinedBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.r))))),
+    );
   }
 }

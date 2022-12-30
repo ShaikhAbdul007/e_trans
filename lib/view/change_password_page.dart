@@ -8,6 +8,7 @@ class ChangePasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isDark = Theme.of(context).brightness == Brightness.dark;
     TextEditingController passController = TextEditingController();
     TextEditingController confirmController = TextEditingController();
 
@@ -27,9 +28,14 @@ class ChangePasswordScreen extends StatelessWidget {
         body: Padding(
           padding: EdgeInsets.only(left: 30.w, right: 30.w, top: 50.h),
           child: ListView(children: [
-            setHeight(10),
+            setHeight(5),
             Text(
-                'Security is must. \n\nPlease enter the address associated with your account'),
+              'Choosing a hard-to-guess, \nbut easy-to-remember password is important!',
+              style: Theme.of(context).textTheme.headline6?.copyWith(
+                  fontSize: 16.sp,
+                  color: isDark ? Colors.white : Colors.black54),
+            ),
+            setHeight(30),
             Container(
                 height: 43.h,
                 width: 290.w,
@@ -46,7 +52,6 @@ class ChangePasswordScreen extends StatelessWidget {
                   ],
                 ),
                 child: CustomTextField(
-                  suffixIcon: const Icon(Icons.perm_identity_outlined),
                   hintText: "Password",
                   controller: passController,
                 )),
@@ -67,7 +72,11 @@ class ChangePasswordScreen extends StatelessWidget {
                   ],
                 ),
                 child: CustomTextField(
-                  suffixIcon: const Icon(Icons.lock_outline),
+                  obscureText: true,
+                  suffixIcon: Icon(
+                    Icons.lock_outline,
+                    color: isDark ? Colors.black : null,
+                  ),
                   hintText: " Confirm Password",
                   controller: confirmController,
                 )),

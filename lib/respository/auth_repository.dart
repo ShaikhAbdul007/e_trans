@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:trasn_human_resource_managment/respository/reponse/network_reponse.dart';
+import '../model/user_profile_model.dart';
 import 'network/api_service.dart';
 import 'network/base_client.dart';
 
@@ -23,5 +22,15 @@ class AuthRepository {
     final response = await apiService
         .fetchGetApiResponse('${Api.baseUrl}${Api.securityCodeApi(userName)}');
     return response;
+  }
+
+  Future<UserProfileModel> userProfile(dynamic userName) async {
+    try {
+      var response = await apiService
+          .fetchGetApiResponse('${Api.baseUrl}${Api.userProfileApi(userName)}');
+      return response = UserProfileModel.fromJson(response);
+    } on Exception catch (e) {
+      throw e.toString();
+    }
   }
 }

@@ -10,6 +10,7 @@ class ForgotPasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isdark = Theme.of(context).brightness == Brightness.dark;
     LoginViewModel loginViewModel = Get.put(LoginViewModel());
     TextEditingController forgotEmpId = TextEditingController();
     TextStyle? style = Theme.of(context).textTheme.bodyText2;
@@ -17,25 +18,53 @@ class ForgotPasswordScreen extends StatelessWidget {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomRight,
-                colors: [
-              Color(0xFFCC9900),
-              Color(0xffff9900),
-              Color(0xFFCC9900),
-              //  Colors.blueAccent.shade100,
-            ])),
+        decoration: isdark
+            ? const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomRight,
+                    colors: [
+                    Colors.black,
+                    Colors.black26
+                    //  Colors.blueAccent.shade100,
+                  ]))
+            : const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomRight,
+                    colors: [
+                    Color(0xFFCC9900),
+                    Color(0xffff9900),
+                    Color(0xFFCC9900),
+                    //  Colors.blueAccent.shade100,
+                  ])),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Forgot Password",
-                style: Theme.of(context).textTheme.headline5),
-            setHeight(20),
+            Padding(
+              padding: EdgeInsets.only(left: 25.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Forgot", style: Theme.of(context).textTheme.headline5),
+                  setHeight(2),
+                  Text("Password ?",
+                      style: Theme.of(context).textTheme.headline5?.copyWith(
+                          color: isdark ? Colors.white : Colors.black)),
+                  setHeight(5),
+                  Text(
+                      'Do not worry! it happens. Please enter the Emp id associated with office Id card.',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline6
+                          ?.copyWith(fontSize: 14.sp)),
+                ],
+              ),
+            ),
+            setHeight(25),
             Container(
                 height: 43.h,
-                width: 290.w,
+                width: 300.w,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8.r),
@@ -49,7 +78,10 @@ class ForgotPasswordScreen extends StatelessWidget {
                   ],
                 ),
                 child: CustomTextField(
-                  suffixIcon: const Icon(Icons.perm_identity_outlined),
+                  suffixIcon: Icon(
+                    Icons.perm_identity_outlined,
+                    color: isdark ? Colors.black : null,
+                  ),
                   hintText: "Emp id",
                   controller: forgotEmpId,
                 )),

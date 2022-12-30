@@ -15,6 +15,7 @@ class CustomButtomNavigation extends StatelessWidget {
     BottomNavigationViewModel bottomNavigationViewModel =
         BottomNavigationViewModel();
     int iconIndex = bottomNavigationViewModel.currentIndex.value;
+    var isdark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
         body: Obx(
           () => IndexedStack(
@@ -36,7 +37,7 @@ class CustomButtomNavigation extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                       blurRadius: 10,
-                      color: Colors.grey.shade300,
+                      color: isdark ? Colors.black : Colors.grey.shade300,
                       offset: const Offset(5, -1),
                       spreadRadius: 2)
                 ],
@@ -44,40 +45,45 @@ class CustomButtomNavigation extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(25.r),
               child: BottomNavigationBar(
-                  iconSize: iconIndex == 0 ? 25.sp : 20.sp,
                   currentIndex: bottomNavigationViewModel.currentIndex.value,
                   onTap: (index) =>
                       bottomNavigationViewModel.changeIndex(index),
                   elevation: 10,
-                  items: const [
+                  items: [
                     BottomNavigationBarItem(
                         icon: Icon(
                           Icons.dashboard_outlined,
-                          color: navBarUnSelectedColor,
+                          color:
+                              isdark ? Colors.white70 : navBarUnSelectedColor,
                         ),
                         activeIcon: Icon(
+                          size: iconIndex == 0 ? 30.sp : 20.sp,
                           Icons.dashboard_outlined,
-                          color: navBarSelectedColor,
+                          color: isdark ? Colors.white : navBarSelectedColor,
                         ),
                         label: 'DashBoard'),
                     BottomNavigationBarItem(
-                        icon: Icon(
-                          Icons.calendar_month_outlined,
-                          color: navBarUnSelectedColor,
-                        ),
-                        activeIcon: Icon(
-                          Icons.calendar_month_sharp,
-                          color: navBarSelectedColor,
-                        ),
-                        label: 'Calender'),
+                      icon: Icon(
+                        Icons.calendar_month_outlined,
+                        color: isdark ? Colors.white70 : navBarUnSelectedColor,
+                      ),
+                      activeIcon: Icon(
+                        size: iconIndex == 0 ? 30.sp : 20.sp,
+                        Icons.calendar_month_sharp,
+                        color: isdark ? Colors.white70 : navBarSelectedColor,
+                      ),
+                      label: 'Calender',
+                    ),
                     BottomNavigationBarItem(
                         icon: Icon(
                           Icons.settings,
-                          color: navBarUnSelectedColor,
+                          color:
+                              isdark ? Colors.white70 : navBarUnSelectedColor,
                         ),
                         activeIcon: Icon(
+                          size: iconIndex == 0 ? 30.sp : 20.sp,
                           Icons.settings,
-                          color: navBarSelectedColor,
+                          color: isdark ? Colors.white70 : navBarSelectedColor,
                         ),
                         label: 'Setting')
                   ]),

@@ -11,8 +11,14 @@ class Api {
     String forgotEndPoint = "emp_forgotpassord?username=$userName";
     return forgotEndPoint;
   }
-  static String securityCodeApi(dynamic userName){
-    String securityCode='emp_securitycode?username=$userName';
+
+  static String securityCodeApi(dynamic userName) {
+    String securityCode = 'emp_securitycode?username=$userName';
     return securityCode;
+  }
+
+  static String userProfileApi(dynamic userName) {
+    String userProfile = 'empprofile?empid=$userName';
+    return userProfile;
   }
 }

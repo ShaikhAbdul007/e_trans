@@ -1,10 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:trasn_human_resource_managment/view/drawer_page.dart';
 import 'package:trasn_human_resource_managment/widget/helper.dart';
 import '../viewModel/attendance_view_model.dart';
 import 'package:intl/intl.dart';
@@ -14,6 +11,7 @@ class AttendanceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isdark = Theme.of(context).brightness == Brightness.dark;
     AttendanceViewModel attendanceViewModel = Get.put(AttendanceViewModel());
     return Scaffold(
       appBar: AppBar(
@@ -40,6 +38,7 @@ class AttendanceScreen extends StatelessWidget {
                     formatButtonVisible: true,
                     titleCentered: true,
                     titleTextStyle: TextStyle(
+                      color: isdark ? Colors.white : null,
                       fontSize: 18.sp,
                     ),
                     headerPadding: EdgeInsets.only(top: 10.h)),
@@ -62,13 +61,17 @@ class AttendanceScreen extends StatelessWidget {
                 daysOfWeekStyle: const DaysOfWeekStyle(
                   weekendStyle: TextStyle(color: Colors.red),
                 ),
-                calendarStyle: const CalendarStyle(
-                    weekendTextStyle: TextStyle(color: Colors.red),
+                calendarStyle: CalendarStyle(
+                    defaultTextStyle:
+                        TextStyle(color: isdark ? Colors.white : null),
+                    weekendTextStyle: const TextStyle(color: Colors.red),
                     todayDecoration: BoxDecoration(
-                        color: Colors.orange, shape: BoxShape.circle),
+                        color: isdark ? Colors.black : Colors.orange,
+                        shape: BoxShape.circle),
                     isTodayHighlighted: true,
                     selectedDecoration: BoxDecoration(
-                        color: Colors.lightBlue, shape: BoxShape.circle)),
+                        color: isdark ? Colors.white24 : Colors.lightBlue,
+                        shape: BoxShape.circle)),
                 onDaySelected: (selectedDay, focusedDay) {
                   attendanceViewModel.selectedDate.value = selectedDay;
                   attendanceViewModel.focusDate.value = focusedDay;

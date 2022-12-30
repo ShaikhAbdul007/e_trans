@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../viewModel/leave_view_model.dart';
-import '../widget/helper.dart';
+import 'package:trasn_human_resource_managment/widget/helper.dart';
+import '../viewModel/planned_holiday_view_model.dart';
 
-class LeaveScreen extends StatelessWidget {
-  const LeaveScreen({super.key});
+class PlannedHolidayScreen extends StatelessWidget {
+  const PlannedHolidayScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    PlannedHolidayViewModel holidayViewModel =
+        Get.put(PlannedHolidayViewModel());
+    TextEditingController fromDateController = TextEditingController();
+    TextEditingController toDateController = TextEditingController();
+    TextEditingController holidayReasonController = TextEditingController();
     var isDark = Theme.of(context).brightness == Brightness.dark;
-    TextEditingController leaveDateController = TextEditingController();
-    TextEditingController leaveReasonController = TextEditingController();
-    LeaveViewModel leaveViewModel = Get.put(LeaveViewModel());
     return Scaffold(
       appBar: AppBar(
         shape: RoundedRectangleBorder(
@@ -22,7 +24,7 @@ class LeaveScreen extends StatelessWidget {
         )),
         centerTitle: true,
         title: Text(
-          'Leave',
+          'Planned Holiday',
           style: Theme.of(context).textTheme.headline5,
         ),
       ),
@@ -54,10 +56,36 @@ class LeaveScreen extends StatelessWidget {
               ),
               child: CustomDatePicker(
                   hintText: 'Choose Date',
-                  selectedDate: leaveViewModel.selectedDate.value,
-                  controller: leaveDateController),
+                  selectedDate: holidayViewModel.selectedFromDate.value,
+                  controller: fromDateController),
             ),
             setHeight(10),
+            Text(
+              'Return Date',
+              style: Theme.of(context).textTheme.headline6?.copyWith(
+                  color: isDark ? Colors.white : Colors.black,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold),
+            ),
+            setHeight(10),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.15),
+                    spreadRadius: 3,
+                    blurRadius: 5,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: CustomDatePicker(
+                  hintText: 'Choose Date',
+                  selectedDate: holidayViewModel.selectedToDate.value,
+                  controller: toDateController),
+            ),
             setHeight(10),
             Text(
               'Comments',
@@ -82,7 +110,7 @@ class LeaveScreen extends StatelessWidget {
               ),
               child: CustomTextField(
                 maxLines: 6,
-                controller: leaveReasonController,
+                controller: holidayReasonController,
                 hintText: 'Enter Comments',
               ),
             ),

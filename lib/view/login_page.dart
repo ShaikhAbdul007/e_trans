@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:trasn_human_resource_managment/view/bottom_navigation_view.dart';
-import 'package:trasn_human_resource_managment/view/dashboard_page.dart';
 import 'package:trasn_human_resource_managment/view/forgetpassword_page.dart';
 import '../viewModel/login_view_model.dart';
 import '../widget/helper.dart';
@@ -17,31 +15,67 @@ class LoginScreen extends StatelessWidget {
     TextEditingController empController = TextEditingController();
     TextEditingController passController = TextEditingController();
     TextStyle? style = Theme.of(context).textTheme.headline6;
+    var isdark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomRight,
-                colors: [
-              Color(0xFFCC9900),
-              Color(0xffff9900),
-              Color(0xFFCC9900),
-              //  Colors.blueAccent.shade100,
-            ])),
+        decoration: isdark
+            ? const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomRight,
+                    colors: [
+                    Colors.black,
+                    Colors.black26
+                    //  Colors.blueAccent.shade100,
+                  ]))
+            : const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomRight,
+                    colors: [
+                    Color(0xFFCC9900),
+                    Color(0xffff9900),
+                    Color(0xFFCC9900),
+                    //  Colors.blueAccent.shade100,
+                  ])),
         child: ListView(
           children: [
             Container(
-                margin: EdgeInsets.only(left: 100.w, top: 100.h),
-                child: Text("Welcome ",
-                    style: Theme.of(context).textTheme.headline4)),
+                margin: EdgeInsets.only(left: 30.w, top: 100.h),
+                child: RichText(
+                    text: TextSpan(
+                        text: 'Welcome To ',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline4
+                            ?.copyWith(color: isdark ? Colors.white : null),
+                        children: [
+                      TextSpan(
+                        text: 'Trans-',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline4
+                            ?.copyWith(color: Colors.amberAccent),
+                      ),
+                      TextSpan(
+                        text: 'Vision',
+                        style: Theme.of(context).textTheme.headline4?.copyWith(
+                            color: isdark ? Colors.white : Colors.black),
+                      ),
+                    ]))),
             setHeight(5),
             Container(
               margin: EdgeInsets.only(left: 80.w),
               child: Text("Glad to see you",
                   style: Theme.of(context).textTheme.headline5),
             ),
+            // setHeight(15),
+            // Container(
+            //   padding: EdgeInsets.only(left: 50.w, right: 42.w),
+            //   child: Text("Please sign in to continue",
+            //       style: Theme.of(context).textTheme.headline6),
+            // ),
             Padding(
               padding: EdgeInsets.only(left: 42.w, right: 42.w, top: 50.h),
               child: Column(
@@ -57,13 +91,15 @@ class LoginScreen extends StatelessWidget {
                             color: Colors.grey.withOpacity(0.15),
                             spreadRadius: 3,
                             blurRadius: 5,
-                            offset: const Offset(
-                                0, 2), // changes position of shadow
+                            offset: const Offset(0, 2),
                           ),
                         ],
                       ),
                       child: CustomTextField(
-                        suffixIcon: const Icon(Icons.perm_identity_outlined),
+                        suffixIcon: Icon(
+                          Icons.perm_identity_outlined,
+                          color: Colors.black,
+                        ),
                         hintText: "Emp id",
                         controller: empController,
                       )),
@@ -89,8 +125,14 @@ class LoginScreen extends StatelessWidget {
                         obscureText: loginViewModel.passwordSecure.value,
                         suffixIcon: IconButton(
                           icon: loginViewModel.passwordSecure.value
-                              ? const Icon(Icons.lock_outline)
-                              : const Icon(Icons.lock_open_outlined),
+                              ? Icon(
+                                  Icons.lock_outline,
+                                  color: Colors.black,
+                                )
+                              : Icon(
+                                  Icons.lock_open_outlined,
+                                  color: isdark ? Colors.white : Colors.black,
+                                ),
                           onPressed: () {
                             loginViewModel.passwordSecureToggle();
                           },
@@ -219,13 +261,16 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-                padding: EdgeInsets.only(left: 110.w, right: 120.w),
-                child: Divider(
-                  color: Colors.white,
-                  thickness: 1.5.sp,
-                  height: 1.2.sp,
-                )),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 115.w),
+              height: 1,
+              width: 20,
+              child: const Divider(
+                color: Colors.white,
+                thickness: 1.5,
+                height: 1.2,
+              ),
+            ),
           ],
         ),
       ),
